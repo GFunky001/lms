@@ -1,26 +1,28 @@
 import CreateCourseForm from "@/components/courses/CreateCourseForm";
 import { db } from "@/lib/db";
 
-
 const CreateCoursePage = async () => {
   const categories = await db.category.findMany({
     orderBy: {
-      name: "asc"
+      name: "asc",
     },
     include: {
-      subCategories: true
-    }
-  }) 
+      subCategories: true,
+    },
+  });
+
   return (
-    <div className="ml-10 mt-10">
-      <CreateCourseForm categories={categories.map((category) => ({
-        label: category.name,
-        value: category.id,
-        subCategories: category.subCategories.map((subcategory)=> ({
-          label: subcategory.name,
-          value: subcategory.id
-        }))
-      }))} />
+    <div>
+      <CreateCourseForm
+        categories={categories.map((category) => ({
+          label: category.name,
+          value: category.id,
+          subCategories: category.subCategories.map((subcategory) => ({
+            label: subcategory.name,
+            value: subcategory.id,
+          })),
+        }))}
+      />
     </div>
   );
 };
